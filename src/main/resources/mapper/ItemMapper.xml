@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xf.mapper.ItemMapper">
+    <insert id="save" parameterType="xf.pojo.Item">
+        insert into item(name,price,production_date,description,pic)
+        values (#{name},#{price},#{productionDate},#{description},#{pic})
+
+    </insert>
+    <!--更新商品-->
+    <update id="UpdateById" parameterType="xf.pojo.Item">
+
+      update item set
+      name=#{name},price=#{price},production_date=#{productionDate},description=#{description},pic=#{pic}
+      where id=#{id}
+
+    </update>
+
+    <!--删除商品-->
+    <delete id="delById" >
+
+      delete from item where id=#{id}
+
+    </delete>
+
+
+    <select id="findCountByName" resultType="java.lang.Long">
+
+      select count(1) from item
+      <where>
+          <if test="name != null and name != ''">
+              name like "%"#{name}"%"
+          </if>
+
+      </where>
+
+    </select>
+
+
+
+
+    <select id="findItemByNameLikeAndLimit" resultType="xf.pojo.Item">
+        select * from item
+        <where>
+            <if test="name != null and name != ''">
+
+                name like "%"#{name}"%"
+
+            </if>
+
+        </where>
+
+        order by created desc
+        limit #{offset},#{size}
+
+    </select>
+    <select id="findById" resultType="xf.pojo.Item">
+
+        select * from item where id=#{id}
+
+    </select>
+</mapper>
